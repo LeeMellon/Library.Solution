@@ -120,3 +120,70 @@ namespace Library.Models
     {
       return _id.GetHashCode();
     }
+
+    public static void Save()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      MySqlCommand cmd = conn.CreateCommand();
+      cmd.CommandText = @"INSERT INTO books (title, callNumber, tagNumber, checkoutDate, dueDate, status) VALUES (@title, @callNumber, @tagNumber, @checkoutDate, @dueDate, @status);";
+      cmd.Parameters.Add(new MySqlParameter(@title, _title));
+      cmd.Parameters.Add(new MySqlParameter(@callNumber, _callNumber));
+      cmd.Parameters.Add(new MySqlParameter(@tagNumber, _tagNumber));
+      cmd.Parameters.Add(new MySqlParameter(@checkoutDate, _checkoutDate));
+      cmd.Parameters.Add(new MySqlParameter(@dueDate, _dueDate));
+      cmd.Parameters.Add(new MySqlParameter(@status, _status));
+      cmd.ExecuteNonQuery();
+
+      _id = (int)cmd.LastInsertedId;
+
+      conn.Close();
+      if(conn != null)
+        conn.Dispose();
+
+    }
+
+    public List<Book> GetAll()
+    {
+      List<Book> allBooks = new List<Book>();
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      MySqlCommand cmd = conn.CreateCommand();
+      cmd.CommandText = @"SELECT * FROM books";
+      MySqlDataReader rdr = cmd.ExecuteReader();
+      while(rdr.Read())
+      {
+        int bookId = rdr.GetInt32(0);
+        string bookTitle = rdr.GetString(1);
+        string bookCallNumber = rdr.GetString(2);
+        string bookTagNumber = rdr.GetString(3);
+        DateTime bookCheckOutDate = rdr.GetDateTime(4);
+        DateTime bookDueDate = rdr.GetDateTime(5);
+        Status bookStatus = rdr.GetStatus(6);
+        Book newBook = new Book(bookTitle, bookCallNumber, bookTagNumber, bookCheckOutDate, bookDueDate, bookStatus, bookId);
+        allBooks.Add(newBook);
+      }
+
+      conn.Close();
+      if (conn != null)
+        conn.Dispose();
+      return allBooks;
+    }
+
+    public static void DeleteAll()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      MySqlCommand cmd = conn.CreateCommand();
+      cmd.CommandText = @"TRUNCATE TABLE books; TRUNCATE TABLE patrons_books; TRUNCATE TABLE authors_books;";
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+        conn.Dispose();
+    }
+
+    }
