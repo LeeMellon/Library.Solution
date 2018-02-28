@@ -16,6 +16,8 @@ namespace Library.Models.Tests
     public void Dispose()
     {
       Book.DeleteAll();
+      Author.DeleteAll();
+      // Patron.DeleteAll();
     }
 
     [TestMethod]
@@ -41,7 +43,7 @@ namespace Library.Models.Tests
       // Act
       firstBook.Save();
       List<Book> booksList = Book.GetAll();
-    
+
       // Assert
       Assert.AreEqual(firstBook, booksList[0]);
     }
