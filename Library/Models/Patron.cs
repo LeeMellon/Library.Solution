@@ -13,7 +13,7 @@ namespace Library.Models
     private int _cardNumber;
 
 
-    public Patron(string firstName, string lastName, string email, int cardNumber = 2000, int id=0)
+    public Patron(string firstName, string lastName, string email, int cardNumber = 1000, int id=0)
     {
       _firstName = firstName;
       _lastName = lastName;
