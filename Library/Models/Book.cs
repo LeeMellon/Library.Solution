@@ -1,3 +1,7 @@
+// CREATE TABLE `library`.`books` ( `id` INT NOT NULL AUTO_INCREMENT , `title` VARCHAR(255) NOT NULL , `call_number` VARCHAR(255) NOT NULL , `tag_number` VARCHAR(255) NOT NULL , `checkout_date` DATE NOT NULL , `duedate` DATE NOT NULL , `status` ENUM('available','on-hold','checked-out','missing') NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+
 using System;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
