@@ -1,21 +1,9 @@
-// CREATE TABLE `library`.`books` ( `id` INT NOT NULL AUTO_INCREMENT , `title` VARCHAR(255) NOT NULL , `call_number` VARCHAR(255) NOT NULL , `tag_number` VARCHAR(255) NOT NULL , `checkout_date` DATE NOT NULL , `duedate` DATE NOT NULL , `status` ENUM('available','on-hold','checked-out','missing') NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
-
-
-
 using System;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 
 namespace Library.Models
 {
-  public enum Status
-  {
-    available,
-    on-hold,
-    checked-out,
-    missing
-  };
-
   public class Book
   {
     private int _id;
@@ -24,9 +12,9 @@ namespace Library.Models
     private string _tagNumber;
     private DateTime _checkoutDate;
     private DateTime _dueDate;
-    private Status _status;
+    private string _status;
 
-    public Book(string title, string callNumber, string tagNumber, DateTime checkoutDate, DateTime dueDate, Status status = available, int id = 0)
+    public Book(string title, string callNumber, string tagNumber, DateTime checkoutDate, DateTime dueDate, string status = "available", int id = 0)
     {
       _title = title;
       _callNumber = callNumber;
@@ -79,7 +67,7 @@ namespace Library.Models
 
     public DateTime GetCheckoutDate()
     {
-      return checkoutDate;
+      return _checkoutDate;
     }
 
     public void SetCheckoutDate(DateTime checkoutDate)
@@ -97,12 +85,12 @@ namespace Library.Models
       _dueDate = dueDate;
     }
 
-    public Status GetStatus()
+    public string GetStatus()
     {
       return _status;
     }
 
-    public void SetStatus(Status status)
+    public void SetStatus(string status)
     {
       _status = status;
     }
@@ -115,8 +103,16 @@ namespace Library.Models
       }
       else
       {
-        Book newBook = (Book) otherBook:
-        return _id == newBook._id && _title == newBook._title && _callNumber == newBook._callNumber && _tagNumber == newBook._tagNumber && _checkoutDate == newBook._checkoutDate && _dueDate == newBook._dueDate && _status == newBook._status);
+        Book newBook = (Book) otherBook;
+        bool idEquality = (this.GetId() == newBook.GetId());
+        bool titleEquality = (this.GetTitle() == newBook.GetTitle());
+        bool callNumberEquality = (this.GetCallNumber() == newBook.GetCallNumber());
+        bool tagNumberEquality = (this.GetTagNumber() == newBook.GetTagNumber());
+        bool checkoutDateEquality = (this.GetCheckoutDate() == newBook.GetCheckoutDate());
+        bool dueDateEquality = (this.GetDueDate() == newBook.GetDueDate());
+        bool statusEquality = (this.GetStatus() == newBook.GetStatus());
+        // return _id == newBook._id && _title == newBook._title && _callNumber == newBook._callNumber && _tagNumber == newBook._tagNumber && _checkoutDate == newBook._checkoutDate && _dueDate == newBook._dueDate && _status == newBook._status;
+        return (idEquality && titleEquality && callNumberEquality && tagNumberEquality && checkoutDateEquality && dueDateEquality && statusEquality);
       }
     }
 
@@ -125,19 +121,19 @@ namespace Library.Models
       return _id.GetHashCode();
     }
 
-    public static void Save()
+    public void Save()
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
 
       MySqlCommand cmd = conn.CreateCommand();
-      cmd.CommandText = @"INSERT INTO books (title, callNumber, tagNumber, checkoutDate, dueDate, status) VALUES (@title, @callNumber, @tagNumber, @checkoutDate, @dueDate, @status);";
-      cmd.Parameters.Add(new MySqlParameter(@title, _title));
-      cmd.Parameters.Add(new MySqlParameter(@callNumber, _callNumber));
-      cmd.Parameters.Add(new MySqlParameter(@tagNumber, _tagNumber));
-      cmd.Parameters.Add(new MySqlParameter(@checkoutDate, _checkoutDate));
-      cmd.Parameters.Add(new MySqlParameter(@dueDate, _dueDate));
-      cmd.Parameters.Add(new MySqlParameter(@status, _status));
+      cmd.CommandText = @"INSERT INTO books (title, call_number, tag_number, checkout_date, duedate, status) VALUES (@title, @callNumber, @tagNumber, @checkoutDate, @dueDate, @status);";
+      cmd.Parameters.Add(new MySqlParameter("@title", _title));
+      cmd.Parameters.Add(new MySqlParameter("@callNumber", _callNumber));
+      cmd.Parameters.Add(new MySqlParameter("@tagNumber", _tagNumber));
+      cmd.Parameters.Add(new MySqlParameter("@checkoutDate", _checkoutDate));
+      cmd.Parameters.Add(new MySqlParameter("@dueDate", _dueDate));
+      cmd.Parameters.Add(new MySqlParameter("@status", _status));
       cmd.ExecuteNonQuery();
 
       _id = (int)cmd.LastInsertedId;
@@ -148,7 +144,7 @@ namespace Library.Models
 
     }
 
-    public List<Book> GetAll()
+    public static List<Book> GetAll()
     {
       List<Book> allBooks = new List<Book>();
       MySqlConnection conn = DB.Connection();
@@ -165,7 +161,7 @@ namespace Library.Models
         string bookTagNumber = rdr.GetString(3);
         DateTime bookCheckOutDate = rdr.GetDateTime(4);
         DateTime bookDueDate = rdr.GetDateTime(5);
-        Status bookStatus = rdr.GetStatus(6);
+        string bookStatus = rdr.GetString(6);
         Book newBook = new Book(bookTitle, bookCallNumber, bookTagNumber, bookCheckOutDate, bookDueDate, bookStatus, bookId);
         allBooks.Add(newBook);
       }
@@ -191,3 +187,4 @@ namespace Library.Models
     }
 
     }
+  }

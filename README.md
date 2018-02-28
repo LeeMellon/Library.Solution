@@ -47,6 +47,8 @@ _This is an Epicodus practice project for week 4 of the C# course. Its purpose i
 
   CREATE TABLE `library`.`patrons_books` ( `id` INT NOT NULL AUTO_INCREMENT , `patron_id` INT NOT NULL , `book_id` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
+  CREATE TABLE `library`.`authors_books` ( `id` INT NOT NULL AUTO_INCREMENT , `author_id` INT NOT NULL , `book_id` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
   
   ```
 
