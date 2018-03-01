@@ -228,5 +228,126 @@ namespace Library.Models
       return foundBook;
     }
 
+    public void Delete()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM books WHERE id = @thisId; DELETE from authors_books WHERE book_id = @thisId; DELETE from patrons_books WHERE book_id = @thisId;";
+
+      MySqlParameter thisId = new MySqlParameter();
+      thisId.ParameterName = "@thisId";
+      thisId.Value = this._id;
+      cmd.Parameters.Add(thisId);
+
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
+    public void AddAuthor(Author author)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      MySqlCommand cmd = conn.CreateCommand();
+      cmd.CommandText = @"INSERT INTO authors_books (author_id, book_id) VALUES (@AuthorId, @BookId)";
+      cmd.Parameters.Add(new MySqlParameter("@AuthorId", author.GetId()));
+      cmd.Parameters.Add(new MySqlParameter("@BookId", _id));
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+        conn.Dispose();
+    }
+
+    public void AddPatron(Patron patron)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      MySqlCommand cmd = conn.CreateCommand();
+      cmd.CommandText = @"INSERT INTO patrons_books (patron_id, book_id) VALUES (@PatronId, @BookId)";
+      cmd.Parameters.Add(new MySqlParameter("@PatronId", patron.GetId()));
+      cmd.Parameters.Add(new MySqlParameter("@BookId", _id));
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+        conn.Dispose();
+    }
+
+    public List<Author> GetAuthors()
+    {
+      List<Author> allAuthors = new List<Author>();
+
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      MySqlCommand cmd = conn.CreateCommand();
+      cmd.CommandText = @"
+        SELECT authors.* FROM books
+        JOIN authors_books ON (books.id = authors_books.book_id)
+        JOIN authors ON (authors_books.author_id = authors.id)
+        WHERE books.id = @ThisId;";
+      cmd.Parameters.Add(new MySqlParameter("@ThisId", _id));
+      MySqlDataReader rdr = cmd.ExecuteReader();
+      while(rdr.Read())
+      {
+
+        int authorId = rdr.GetInt32(0);
+        string authorFirstName= rdr.GetString(1);
+        string authorLastName = rdr.GetString(2);
+
+        Author newAuthor = new Author(authorFirstName, authorLastName, authorId);
+        allAuthors.Add(newAuthor);
+      }
+
+      conn.Close();
+      if (conn != null)
+        conn.Dispose();
+
+      return allAuthors;
+
+    }
+
+    public List<Patron> GetPatrons()
+    {
+      List<Patron> allPatrons = new List<Patron>();
+
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      MySqlCommand cmd = conn.CreateCommand();
+      cmd.CommandText = @"
+        SELECT patrons.* FROM books
+        JOIN patrons_books ON (books.id = patrons_books.book_id)
+        JOIN patrons ON (patrons_books.patron_id = patrons.id)
+        WHERE books.id = @ThisId;";
+      cmd.Parameters.Add(new MySqlParameter("@ThisId", _id));
+      MySqlDataReader rdr = cmd.ExecuteReader();
+      while(rdr.Read())
+      {
+
+        int patronId = rdr.GetInt32(0);
+        string patronFirstName= rdr.GetString(1);
+        string patronLastName = rdr.GetString(2);
+        string patronEmail = rdr.GetString(3);
+        int patronCardNumber = rdr.GetInt32(4);
+        Patron newPatron = new Patron(patronFirstName, patronLastName, patronEmail, patronCardNumber, patronId);
+        allPatrons.Add(newPatron);
+      }
+
+      conn.Close();
+      if (conn != null)
+        conn.Dispose();
+
+      return allPatrons;
+
     }
   }
+}

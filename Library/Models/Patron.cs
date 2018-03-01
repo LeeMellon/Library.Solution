@@ -156,6 +156,57 @@ namespace Library.Models
         conn.Dispose();
     }
 
+    public void AddBook(Book patron)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      MySqlCommand cmd = conn.CreateCommand();
+      cmd.CommandText = @"INSERT INTO patrons_books (patron_id, book_id) VALUES (@PatronId, @BookId)";
+      cmd.Parameters.Add(new MySqlParameter("@PatronId", patron.GetId()));
+      cmd.Parameters.Add(new MySqlParameter("@BookId", _id));
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+        conn.Dispose();
+    }
+
+    public List<Book> GetBooks()
+    {
+      List<Book> books = new List<Book>();
+
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      MySqlCommand cmd = conn.CreateCommand();
+      cmd.CommandText = @"
+        SELECT books.* FROM patrons
+        JOIN patrons_books ON (patrons.id = patrons_books.patron_id)
+        JOIN books ON (patrons_books.book_id = books.id)
+        WHERE patrons.id = @ThisId;";
+      cmd.Parameters.Add(new MySqlParameter("@ThisId", _id));
+      MySqlDataReader rdr = cmd.ExecuteReader();
+      while(rdr.Read())
+      {
+        int bookId = rdr.GetInt32(0);
+        string bookTitle = rdr.GetString(1);
+        string bookCallNumber= rdr.GetString(2);
+        string bookTagNumber = rdr.GetString(3);
+        DateTime bookCheckoutDate = rdr.GetDateTime(4);
+        DateTime bookDuedate = rdr.GetDateTime(5);
+        string bookStatus = rdr.GetString(6);
+        Book newBook = new Book(bookTitle, bookCallNumber, bookTagNumber, bookCheckoutDate, bookDuedate, bookStatus, bookId);
+        books.Add(newBook);
+      }
+
+      conn.Close();
+      if (conn != null)
+        conn.Dispose();
+
+      return books;
+    }
+
   }
 
 }

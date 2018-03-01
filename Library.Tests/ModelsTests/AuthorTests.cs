@@ -17,7 +17,7 @@ namespace Library.Models.Tests
     {
       Author.DeleteAll();
       Book.DeleteAll();
-      // Patron.DeleteAll();
+      Patron.DeleteAll();
     }
 
     [TestMethod]

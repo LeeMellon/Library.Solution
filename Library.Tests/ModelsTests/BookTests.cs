@@ -17,7 +17,7 @@ namespace Library.Models.Tests
     {
       Book.DeleteAll();
       Author.DeleteAll();
-      // Patron.DeleteAll();
+      Patron.DeleteAll();
     }
 
     [TestMethod]
@@ -164,6 +164,62 @@ namespace Library.Models.Tests
 
       //Assert
       Assert.AreEqual(testBook, foundBook);
+    }
+
+    [TestMethod]
+    public void Delete_RemovesBookFromDatabase_Void()
+    {
+      //Arrange
+      Book testBook = new Book("Jaws", "FICTION BENCHLEY 1991", "Jaw1", DateTime.Today, DateTime.Today);
+      testBook.Save();
+      Book testBook2 = new Book("It", "FICTION KING", "It1", DateTime.Today, DateTime.Today);
+      testBook2.Save();
+      Patron testPatron = new Patron("Peter", "Benchley", "pbenchley@me.com", 1004);
+      testPatron.Save();
+      Author testAuthor = new Author("Stephen", "King");
+      testAuthor.Save();
+
+      testPatron.AddBook(testBook);
+      testAuthor.AddBook(testBook);
+
+      //Act
+      testBook.Delete();
+      List<Book> allBooks = Book.GetAll();
+      List<Book> testPatronBooks = testPatron.GetBooks();
+      List<Book> testAuthorBooks = testAuthor.GetBooks();
+
+      //Assert
+      Assert.AreEqual(1, allBooks.Count);
+      Assert.AreEqual(0, testPatronBooks.Count);
+      Assert.AreEqual(0, testAuthorBooks.Count);
+    }
+
+    [TestMethod]
+    public void AddAuthor_AddAuthorToBook_Void()
+    {
+      Book testBook = new Book("Jaws", "FICTION BENCHLEY 1991", "Jaw1", DateTime.Today, DateTime.Today);
+      Author testAuthor = new Author("Peter", "Benchley");
+      testBook.Save();
+      testAuthor.Save();
+      testBook.AddAuthor(testAuthor);
+
+      List<Author> result = testBook.GetAuthors();
+      Assert.AreEqual(1, result.Count);
+      CollectionAssert.AreEqual(new List<Author>{testAuthor}, result);
+    }
+
+    [TestMethod]
+    public void AddPatron_AddPatronToBook_Void()
+    {
+      Book testBook = new Book("Jaws", "FICTION BENCHLEY 1991", "Jaw1", DateTime.Today, DateTime.Today);
+      Patron testPatron = new Patron("Stephen", "King", "Sking@MeAsWell.com", 1005);
+      testBook.Save();
+      testPatron.Save();
+      testBook.AddPatron(testPatron);
+
+      List<Patron> result = testBook.GetPatrons();
+      Assert.AreEqual(1, result.Count);
+      CollectionAssert.AreEqual(new List<Patron>{testPatron}, result);
     }
   }
 }
