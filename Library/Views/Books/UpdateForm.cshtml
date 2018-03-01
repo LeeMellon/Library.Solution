@@ -1,0 +1,48 @@
+@{
+  Layout = "_Layout";
+}
+
+<h2>Edit Book: @Model["book"].GetTitle()</h2>
+<form  class="form-inline" action="/books/@Model["book"].GetId()/update" method="post">
+  <div class=form-group>
+    <label for="title">Title:</label>
+    <input type="text" name="new-title" value="@Model["book"].GetTitle()">
+  </div>
+
+  <div class=form-group>
+    <label for="newauthorId">Author:</label>
+    <select name="newauthorId">
+      @foreach(var author in @Model["authors"])
+      {
+        <option value=@author.GetId()>@author.GetFirstName()@author.GetLastName()</option>
+      }
+    </select>
+  </div>
+
+  <div class=form-group>
+    <label for="call-number">Call number:</label>
+    <input type="text" name="new-call-number" value="@Model["book"].GetCallNumber()">
+  </div>
+
+  <div class=form-group>
+    <label for="tag-number">Tag number:</label>
+    <input type="text" name="new-tag-number" value="@Model["book"].GetTagNumber()">
+  </div>
+
+  <div class=form-group>
+    <label for="checkout-date">Checkout Date:</label>
+    <input type="date" name="new-checkout-date" value="@Model["book"].GetCheckoutDate()">
+  </div>
+
+  <div class=form-group>
+    <label for="due-date">Due Date:</label>
+    <input type="date" name="new-duedate" value="@Model["book"].GetDueDate()">
+  </div>
+
+  <div class=form-group>
+    <label for="status">Status:</label>
+    <input type="text" name="new-status" value="@Model["book"].GetStatus()">
+  </div>
+
+    <button type="submit" class="btn btn-default">Edit</button>
+</form>

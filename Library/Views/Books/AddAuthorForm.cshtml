@@ -1,0 +1,19 @@
+@{
+  Layout = "_Layout";
+}
+
+<div class="well">
+<h4>Add an author to this book:</h4>
+<form class="form-inline" action="/books/@Model["book"].GetId()/authors/new" method="post">
+  <div class="form-group">
+    <label for="author-id">Select an author</label>
+    <select id="author-id" name="author-id" type="text">
+      @foreach (var author in @Model["allAuthors"])
+      {
+        <option value="@author.GetId()">@author.GetFirstName() @author.GetLastName()</option>
+      }
+    </select>
+  </div>
+  <button type="submit" class="btn btn-default">Add</button>
+</form>
+</div>

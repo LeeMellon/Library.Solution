@@ -16,6 +16,18 @@ namespace Library.Controllers
       return View(allBooks);
     }
 
+    [HttpGet("/books/{bookId}/authors/new")]
+    public ActionResult AddAuthorForm(int bookId)
+    {
+      Dictionary<string, object> model = new Dictionary<string, object>();
+      Book selectedBook = Book.Find(bookId);
+      List<Author> bookAuthors = selectedBook.GetAuthors();
+      List<Author> allAuthors = Author.GetAll();
+      model.Add("book", selectedBook);
+      model.Add("bookAuthors", bookAuthors);
+      model.Add("allAuthors", allAuthors);
+      return View(model);
+    }
 
     //ADD AUTHOR TO BOOK
     [HttpPost("/books/{bookId}/authors/new")]
@@ -68,10 +80,41 @@ namespace Library.Controllers
     }
 
     //DELETE BOOK FROM DB
-    [HttpGet]("/books/{id}/delete")
-    public ActionResult Delete()
+    [HttpGet("/books/{id}/delete")]
+    public ActionResult Delete(int id)
     {
-
+      Book thisBook = Book.Find(id);
+      thisBook.Delete();
+      List<Book> allBooks = Book.GetAll();
+      return View("Index", allBooks);
     }
+
+    //EDIT BOOK
+    [HttpGet("/books/{id}/update")]
+    public ActionResult UpdateForm(int id)
+    {
+      Book thisBook = Book.Find(id);
+      List<Author> allAuthors = Author.GetAll();
+      Dictionary<string, object> bookDetails = new Dictionary <string, object>();
+      bookDetails.Add("book", thisBook);
+      bookDetails.Add("authors", allAuthors);
+
+      return View(bookDetails);
+    }
+
+    [HttpPost("/books/{id}/update")]
+    public ActionResult Update(int id)
+    {
+      Book thisBook = Book.Find(id);
+      string newTitle = Request.Form["new-title"];
+      string newCallNumber = Request.Form["new-call-number"];
+      string newTagNumber = Request.Form["new-tag-number"];
+      DateTime newCheckoutDate = Convert.ToDateTime(Request.Form["new-checkout-date"]);
+      DateTime newDuedate= Convert.ToDateTime(Request.Form["new-duedate"]);
+      string newStatus = Request.Form["new-status"];
+
+      return RedirectToAction("Index");
+    }
+
   }
 }

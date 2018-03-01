@@ -13,7 +13,12 @@
     <ul>
       @foreach (Book book in @Model["patronBooks"])
       {
-        <li>@book.GetTitle()</li>
+        <li>Title: @book.GetTitle()</li>
+        <li>Call Number: @book.GetCallNumber()</li>
+        <li>Tag Number: @book.GetTagNumber()</li>
+        <li>Checkout Date: @book.GetCheckoutDate()</li>
+        <li>Due Date: @book.GetDueDate()</li>
+        <li>Status: @book.GetStatus()</li>
       }
     </ul>
   </div>
