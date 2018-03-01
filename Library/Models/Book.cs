@@ -186,5 +186,47 @@ namespace Library.Models
         conn.Dispose();
     }
 
+    public static Book Find(int id)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      MySqlCommand cmd = conn.CreateCommand();
+      cmd.CommandText = @"SELECT * FROM `books` WHERE id = @thisId;";
+
+      cmd.Parameters.Add(new MySqlParameter("@thisId", id));
+
+      MySqlDataReader rdr = cmd.ExecuteReader();
+
+      int bookId = 0;
+      string bookTitle = "";
+      string bookCallNumber = "";
+      string bookTagNumber = "";
+      DateTime bookCheckOutDate = DateTime.Today;
+      DateTime bookDueDate = DateTime.Today;
+      string bookStatus = "";
+
+      while (rdr.Read())
+      {
+        bookId = rdr.GetInt32(0);
+        bookTitle = rdr.GetString(1);
+        bookCallNumber = rdr.GetString(2);
+        bookTagNumber = rdr.GetString(3);
+        bookCheckOutDate = rdr.GetDateTime(4);
+        bookDueDate = rdr.GetDateTime(5);
+        bookStatus = rdr.GetString(6);
+      }
+
+      Book foundBook = new Book(bookTitle, bookCallNumber, bookTagNumber, bookCheckOutDate, bookDueDate, bookStatus, bookId);
+
+      conn.Close();
+      if (conn !=null)
+      {
+        conn.Dispose();
+      }
+
+      return foundBook;
+    }
+
     }
   }

@@ -139,9 +139,9 @@ namespace Library.Models.Tests
     public void DeleteAll_DeletesAllBooksFromDatabase_Booklist()
     {
       //Arrange
-      Book testBook = new Book("Jaws", "FICTION BENCHLEY 1991", "Jaw1", DateTime.Now, DateTime.Now);
+      Book testBook = new Book("Jaws", "FICTION BENCHLEY 1991", "Jaw1", DateTime.Today, DateTime.Today);
       testBook.Save();
-      Book testBook2 = new Book("It", "FICTION KING", "It1", DateTime.Now, DateTime.Now);
+      Book testBook2 = new Book("It", "FICTION KING", "It1", DateTime.Today, DateTime.Today);
       testBook2.Save();
 
       //Act
@@ -150,6 +150,20 @@ namespace Library.Models.Tests
 
       //Assert
       Assert.AreEqual(0, result.Count);
+    }
+
+    [TestMethod]
+    public void Find_FindsBookInDatabase_Book()
+    {
+      //Arrange
+      Book testBook = new Book("Jaws", "FICTION BENCHLEY 1991", "Jaw1", DateTime.Today, DateTime.Today);
+      testBook.Save();
+
+      //Act
+      Book foundBook = Book.Find(testBook.GetId());
+
+      //Assert
+      Assert.AreEqual(testBook, foundBook);
     }
   }
 }
