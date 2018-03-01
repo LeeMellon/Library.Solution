@@ -135,5 +135,22 @@ namespace Library.Models.Tests
       //Assert
       Assert.AreEqual(0, result.Count);
     }
+
+    [TestMethod]
+    public void Delete_DeletesPatronFromDatabase_Patronlist()
+    {
+      //Arrange
+      Patron testPatron = new Patron("Peter", "Benchley", "pbenchley@me.com", 1006);
+      testPatron.Save();
+      Patron testPatron2 = new Patron("Stephen", "King", "Sking@MeAsWell.com", 1007);
+      testPatron2.Save();
+
+      //Act
+      testPatron.Delete();
+      List<Patron> result = Patron.GetAll();
+
+      //Assert
+      Assert.AreEqual(1, result.Count);
+    }
   }
 }

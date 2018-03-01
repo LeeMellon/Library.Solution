@@ -174,6 +174,28 @@ namespace Library.Models
       return books;
 
     }
+
+    public void Delete()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM authors WHERE id = @thisId; DELETE from authors_books WHERE author_id = @thisId;";
+      cmd.Parameters.AddWithValue("@thisId", _id);
+      // MySqlParameter thisId = new MySqlParameter();
+      // thisId.ParameterName = "@thisId";
+      // thisId.Value = this._id;
+      // cmd.Parameters.Add(thisId);
+
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
   }
 
 }

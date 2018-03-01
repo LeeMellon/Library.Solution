@@ -122,5 +122,22 @@ namespace Library.Models.Tests
       //Assert
       Assert.AreEqual(0, result.Count);
     }
+
+    [TestMethod]
+    public void Delete_DeletesAuthorFromDatabase_Authorlist()
+    {
+      //Arrange
+      Author testAuthor = new Author("Peter", "Benchley");
+      testAuthor.Save();
+      Author testAuthor2 = new Author("Stephen", "King");
+      testAuthor2.Save();
+
+      //Act
+      testAuthor.Delete();
+      List<Author> result = Author.GetAll();
+
+      //Assert
+      Assert.AreEqual(1, result.Count);
+    }
   }
 }
