@@ -62,9 +62,16 @@ namespace Library.Controllers
     [HttpPost("/books/new")]
     public ActionResult Create()
     {
-      Book newBook = new Book(Request.Form["new-book-title"], Request.Form["new-call-number"], Request.Form["new-tag-number"], Convert.ToDateTime(Request.Form["new-checkout-date"]), Convert.ToDateTime(Request.Form["new-duedate"]), Request.Form["new-status"]);
+      Book newBook = new Book(Request.Form["new-title"], Request.Form["new-call-number"], Request.Form["new-tag-number"], Convert.ToDateTime(Request.Form["new-checkout-date"]), Convert.ToDateTime(Request.Form["new-duedate"]), Request.Form["new-status"]);
       newBook.Save();
       return RedirectToAction("Index");
+    }
+
+    //DELETE BOOK FROM DB
+    [HttpGet]("/books/{id}/delete")
+    public ActionResult Delete()
+    {
+
     }
   }
 }

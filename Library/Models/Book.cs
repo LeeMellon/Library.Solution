@@ -14,7 +14,8 @@ namespace Library.Models
     private DateTime _dueDate;
     private string _status;
 
-    public Book(string title, string callNumber, string tagNumber, DateTime checkoutDate, DateTime dueDate, string status = "available", int id = 0)
+// DateTime checkoutDate = DateTime.Today, DateTime dueDate = DateTime.Today,
+    public Book(string title, string callNumber, string tagNumber,DateTime checkoutDate , DateTime dueDate ,string status = "available", int id = 0)
     {
       _title = title;
       _callNumber = callNumber;
@@ -347,6 +348,36 @@ namespace Library.Models
         conn.Dispose();
 
       return allPatrons;
+
+    }
+
+    public void Edit(string title, string callNumber, string tagNumber, DateTime checkoutDate, DateTime dueDate, string status)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      MySqlCommand cmd = conn.CreateCommand();
+      cmd.CommandText = @"UPDATE books SET title = @title, call_number =@callNumber, tag_number = @tagNumber, checkout_date = @checkoutDate, duedate = @dueDate, status = @status WHERE id = @searchId;";
+      cmd.Parameters.Add(new MySqlParameter("@searchId", _id));
+      cmd.Parameters.Add(new MySqlParameter("@title", _title));
+      cmd.Parameters.Add(new MySqlParameter("@callNumber", _callNumber));
+      cmd.Parameters.Add(new MySqlParameter("@tagNumber", _tagNumber));
+      cmd.Parameters.Add(new MySqlParameter("@checkoutDate", _checkoutDate));
+      cmd.Parameters.Add(new MySqlParameter("@dueDate", _dueDate));
+      cmd.Parameters.Add(new MySqlParameter("@status", _status));
+
+      cmd.ExecuteNonQuery();
+      _title = title;
+      _callNumber = callNumber;
+      _tagNumber = tagNumber;
+      _checkoutDate = checkoutDate;
+      _dueDate = dueDate;
+      _status = status;
+
+
+      conn.Close();
+      if(conn != null)
+        conn.Dispose();
 
     }
   }

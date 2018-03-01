@@ -221,5 +221,26 @@ namespace Library.Models.Tests
       Assert.AreEqual(1, result.Count);
       CollectionAssert.AreEqual(new List<Patron>{testPatron}, result);
     }
+
+    [TestMethod]
+    public void Edit_EditsBookInfoInDatabase_Values()
+    {
+      //Arrange
+      Book testBook = new Book("Jaws", "FICTION BENCHLEY 1991", "Jaw1", DateTime.Today, DateTime.Today);
+      testBook.Save();
+
+      //Act
+      testBook.Edit("It", "FICTION KING", "It1", DateTime.Today, DateTime.Today, "checkedout");
+
+      //Assert
+      Assert.AreEqual("It", testBook.GetTitle());
+      Assert.AreEqual("FICTION KING", testBook.GetCallNumber());
+      Assert.AreEqual("It1", testBook.GetTagNumber());
+      Assert.AreEqual(DateTime.Today, testBook.GetCheckoutDate());
+      Assert.AreEqual(DateTime.Today, testBook.GetDueDate());
+      Assert.AreEqual("checkedout", testBook.GetStatus());
+
+    }
+
   }
 }

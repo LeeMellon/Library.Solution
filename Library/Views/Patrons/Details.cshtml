@@ -6,12 +6,12 @@
 
 <h2>Patron: @Model["patron"].GetFirstName() @Model["patron"].GetLastName()</h2>
 <hr />
-@if (@Model["bookPatrons"].Count != 0)
+@if (@Model["patronBooks"].Count != 0)
 {
   <div class="well">
     <h4>This patron has these books:</h4>
     <ul>
-      @foreach (Book book in @Model["bookPatrons"])
+      @foreach (Book book in @Model["patronBooks"])
       {
         <li>@book.GetTitle()</li>
       }
@@ -20,7 +20,7 @@
 }
 <div class="well">
 <h4>Add a book to this patron:</h4>
-<form class="form-inline" action="/patrons/@Model["patron"].GetId()/patrons/new" method="post">
+<form class="form-inline" action="/patrons/@Model["patron"].GetId()/books/new" method="post">
   <div class="form-group">
     <label for="book-id">Select a book</label>
     <select id="book-id" name="book-id" type="text">

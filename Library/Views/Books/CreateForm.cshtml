@@ -4,7 +4,7 @@
 
 <h1>Add a new book</h1>
 
-<form class="form-inline" action="/books" method="post">
+<form class="form-inline" action="/books/new" method="post">
   <div class="form-group">
     <label for="new-title">Book title:</label>
     <input id="new-title" name="new-title" type="text" required="true">
@@ -22,12 +22,12 @@
 
   <div class="form-group">
     <!-- <label for="new-checkout-date">Book checkout date:</label> -->
-    <input id="new-checkout-date" name="new-checkout-date" value="" type="hidden" required="true">
+    <input id="new-checkout-date" name="new-checkout-date" value="01/01/0001" type="hidden" required="true">
   </div>
 
   <div class="form-group">
     <!-- <label for="new-duedate">Book due date:</label> -->
-    <input id="new-duedate" name="new-duedate" value="" type="hidden" required="true">
+    <input id="new-duedate" name="new-duedate" value="01/01/0001" type="hidden" required="true">
   </div>
 
   <div class="form-group">

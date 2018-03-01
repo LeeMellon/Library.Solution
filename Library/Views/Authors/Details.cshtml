@@ -6,12 +6,12 @@
 
 <h2>Author: @Model["author"].GetFirstName() @Model["author"].GetLastName()</h2>
 <hr />
-@if (@Model["bookAuthors"].Count != 0)
+@if (@Model["authorBooks"].Count != 0)
 {
   <div class="well">
     <h4>This author has these books:</h4>
     <ul>
-      @foreach (Book book in @Model["bookAuthors"])
+      @foreach (Book book in @Model["authorBooks"])
       {
         <li>@book.GetTitle()</li>
       }
