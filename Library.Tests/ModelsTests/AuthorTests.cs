@@ -139,5 +139,19 @@ namespace Library.Models.Tests
       //Assert
       Assert.AreEqual(1, result.Count);
     }
+
+    [TestMethod]
+    public void Find_FindsAuthorInDatabase_Author()
+    {
+      //Arrange
+      Author testAuthor = new Author("Peter", "Benchley");
+      testAuthor.Save();
+
+      //Act
+      Author foundAuthor = Author.Find(testAuthor.GetId());
+
+      //Assert
+      Assert.AreEqual(testAuthor, foundAuthor);
+    }
   }
 }

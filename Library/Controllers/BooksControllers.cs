@@ -19,22 +19,22 @@ namespace Library.Controllers
 
     //ADD AUTHOR TO BOOK
     [HttpPost("/books/{bookId}/authors/new")]
-    public ActionResult AddAuthor(int authorId)
+    public ActionResult AddAuthor(int bookId)
     {
       Book book = Book.Find(bookId);
       Author thisAuthor = Author.Find(Convert.ToInt32(Request.Form["author-id"]));
       book.AddAuthor(thisAuthor);
-      return RedirectToAction(XXXXXXXXXXXX);
+      return RedirectToAction("Index");
     }
 
     //ADD PATRON TO BOOK
     [HttpPost("/books/{bookId}/patrons/new")]
-    public ActionResult AddPatron(int patronId)
+    public ActionResult AddPatron(int bookId)
     {
       Book book = Book.Find(bookId);
       Patron thisPatron = Patron.Find(Convert.ToInt32(Request.Form["patron-id"]));
       book.AddPatron(thisPatron);
-      return RedirectToAction(XXXXXXXXXXXXX);
+      return RedirectToAction("Index");
     }
 
     //DISPLAY BOOK DETAILS
@@ -62,7 +62,7 @@ namespace Library.Controllers
     [HttpPost("/books/new")]
     public ActionResult Create()
     {
-      Book newBook = new Book(Request.Form["book-name"]);
+      Book newBook = new Book(Request.Form["new-book-title"], Request.Form["new-call-number"], Request.Form["new-tag-number"], Convert.ToDateTime(Request.Form["new-checkout-date"]), Convert.ToDateTime(Request.Form["new-duedate"]), Request.Form["new-status"]);
       newBook.Save();
       return RedirectToAction("Index");
     }

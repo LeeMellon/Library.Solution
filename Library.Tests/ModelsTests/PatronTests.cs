@@ -152,5 +152,19 @@ namespace Library.Models.Tests
       //Assert
       Assert.AreEqual(1, result.Count);
     }
+
+    [TestMethod]
+    public void Find_FindsPatronInDatabase_Patron()
+    {
+      //Arrange
+      Patron testPatron = new Patron("Peter", "Benchley", "pbenchley@me.com", 1006);
+      testPatron.Save();
+
+      //Act
+      Patron foundPatron = Patron.Find(testPatron.GetId());
+
+      //Assert
+      Assert.AreEqual(testPatron, foundPatron);
+    }
   }
 }

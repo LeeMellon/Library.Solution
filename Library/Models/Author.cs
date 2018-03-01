@@ -196,6 +196,39 @@ namespace Library.Models
       }
     }
 
-  }
+    public static Author Find(int id)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
 
+      MySqlCommand cmd = conn.CreateCommand();
+      cmd.CommandText = @"SELECT * FROM `authors` WHERE id = @thisId;";
+
+      cmd.Parameters.Add(new MySqlParameter("@thisId", id));
+
+      MySqlDataReader rdr = cmd.ExecuteReader();
+
+      int authorId = 0;
+      string authorFirstName = "";
+      string authorLastName = "";
+
+      while (rdr.Read())
+      {
+        authorId = rdr.GetInt32(0);
+        authorFirstName = rdr.GetString(1);
+        authorLastName = rdr.GetString(2);
+      }
+
+      Author foundAuthor = new Author(authorFirstName, authorLastName, authorId);
+
+      conn.Close();
+      if (conn !=null)
+      {
+        conn.Dispose();
+      }
+
+      return foundAuthor;
+    }
+
+  }
 }

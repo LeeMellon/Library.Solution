@@ -19,12 +19,12 @@ namespace Library.Controllers
 
       //ADD BOOK TO AUTHOR
       [HttpPost("/authors/{authorId}/books/new")]
-      public ActionResult AddBook(int bookId)
+      public ActionResult AddBook(int authorId)
       {
         Author author = Author.Find(authorId);
         Book thisBook = Book.Find(Convert.ToInt32(Request.Form["book-id"]));
         author.AddBook(thisBook);
-        return RedirectToAction(XXXXXXXXXXXX);
+        return RedirectToAction("Index");
       }
 
 
@@ -53,7 +53,7 @@ namespace Library.Controllers
       [HttpPost("/authors/new")]
       public ActionResult Create()
       {
-        Author newAuthor = new Author(Request.Form["author-name"]);
+        Author newAuthor = new Author(Request.Form["new-first-name"], Request.Form["new-last-name"]);
         newAuthor.Save();
         return RedirectToAction("Index");
       }

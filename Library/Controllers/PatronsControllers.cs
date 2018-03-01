@@ -18,12 +18,12 @@ namespace Library.Controllers
 
       //ADD BOOK TO PATRON
       [HttpPost("/patrons/{patronId}/books/new")]
-      public ActionResult AddBook(int bookId)
+      public ActionResult AddBook(int patronId)
       {
         Patron patron = Patron.Find(patronId);
         Book thisBook = Book.Find(Convert.ToInt32(Request.Form["book-id"]));
         patron.AddBook(thisBook);
-        return RedirectToAction(XXXXXXXXXXXXX);
+        return RedirectToAction("Index");
       }
 
       //DISPLAY PATRON DETAILS
@@ -51,7 +51,7 @@ namespace Library.Controllers
       [HttpPost("/patrons/new")]
       public ActionResult Create()
       {
-        Patron newPatron = new Patron(Request.Form["patron-name"]);
+        Patron newPatron = new Patron(Request.Form["new-first-name"], Request.Form["new-last-name"], Request.Form["new-email"], Convert.ToInt32(Request.Form["new-card-number"]));
         newPatron.Save();
         return RedirectToAction("Index");
       }
