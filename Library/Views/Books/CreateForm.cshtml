@@ -1,0 +1,38 @@
+@{
+  Layout = "_Layout";
+}
+
+<h1>Add a new book</h1>
+
+<form class="form-inline" action="/books" method="post">
+  <div class="form-group">
+    <label for="new-title">Book title:</label>
+    <input id="new-title" name="new-title" type="text" required="true">
+  </div>
+
+  <div class="form-group">
+    <label for="new-call-number">Book call number:</label>
+    <input id="new-call-number" name="new-call-number" type="text" required="true">
+  </div>
+
+  <div class="form-group">
+    <label for="new-tag-number">Book tag number:</label>
+    <input id="new-tag-number" name="new-tag-number" type="text" required="true">
+  </div>
+
+  <div class="form-group">
+    <!-- <label for="new-checkout-date">Book checkout date:</label> -->
+    <input id="new-checkout-date" name="new-checkout-date" value="" type="hidden" required="true">
+  </div>
+
+  <div class="form-group">
+    <!-- <label for="new-duedate">Book due date:</label> -->
+    <input id="new-duedate" name="new-duedate" value="" type="hidden" required="true">
+  </div>
+
+  <div class="form-group">
+    <!-- <label for="new-status">Book status:</label> -->
+    <input id="new-status" name="new-status" value="available" type="hidden" required="true">
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>

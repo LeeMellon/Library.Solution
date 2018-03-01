@@ -1,0 +1,38 @@
+@{
+  Layout = "_Layout";
+}
+
+<hr />
+<h2>Patrons:</h2>
+@if (Model.Count != 0)
+{
+<div class="well">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>First name</th>
+        <th>Last Name</th>
+        <th>email</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    <thead>
+    <tbody>
+
+@foreach(var patron in Model)
+{
+  <tr>
+    <td class="col-sm-3"><a href='/patrons/@patron.GetId()'> @patron.GetFirstName()</a></td>
+    <td class="col-sm-3">@patron.GetLastName()</td>
+    <td class="col-sm-3">@patron.GetEmail()</td>
+    <td class="col-sm-3"><a href="/patrons/@patron.GetId()/update" class="btn btn-default" role="button">Edit this patron</a></td>
+    <td class="col-sm-3"><a href="/patrons/@patron.GetId()/delete" class="btn btn-default" role="button">Delete this patron</a></td>
+  </tr>
+}
+    </tbody>
+  </table>
+</div>
+
+<form action="/patrons/delete" method="post">
+  <button type="submit" name="button" class="btn btn-default">Clear All Patrons</button>
+</form>

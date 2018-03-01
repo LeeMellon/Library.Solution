@@ -1,0 +1,39 @@
+@{
+  Layout = "_Layout";
+}
+
+<hr />
+<h2>Authors:</h2>
+@if (Model.Count != 0)
+{
+<div class="well">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>First name</th>
+        <th>Last Name</th>
+        <th></th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    <thead>
+    <tbody>
+
+@foreach(var author in Model)
+{
+  <tr>
+    <td class="col-sm-3"><a href='/authors/@author.GetId()'> @author.GetFirstName()</a></td>
+    <td class="col-sm-3">@author.GetLastName()</td>
+    <td class="col-sm-3"></td>
+    <td class="col-sm-3"><a href="/authors/@author.GetId()/update" class="btn btn-default" role="button">Edit this author</a></td>
+    <td class="col-sm-3"><a href="/authors/@author.GetId()/delete" class="btn btn-default" role="button">Delete this author</a></td>
+  </tr>
+}
+    </tbody>
+  </table>
+</div>
+
+<form action="/authors/delete" method="post">
+  <button type="submit" name="button" class="btn btn-default">Clear All Books</button>
+</form>
+}

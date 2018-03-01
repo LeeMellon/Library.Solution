@@ -1,0 +1,29 @@
+@{
+  Layout = "_Layout";
+}
+
+<h1>Add a new patron</h1>
+
+<form class="form-inline" action="/patrons" method="post">
+  <div class="form-group">
+    <label for="new-first-name">Patron first name:</label>
+    <input id="new-first-name" name="new-first-name" type="text" required="true">
+  </div>
+
+  <div class="form-group">
+    <label for="new-last-name">Patron last name:</label>
+    <input id="new-last-name" name="new-last-name" type="text" required="true">
+  </div>
+
+  <div class="form-group">
+    <label for="new-email">Patron email:</label>
+    <input id="new-email" name="new-email" type="text" required="true">
+  </div>
+
+  <div class="form-group">
+    <label for="new-card-number">Patron card number:</label>
+    <input id="new-card-number" name="new-card-number" type="text" required="true">
+  </div>
+
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>

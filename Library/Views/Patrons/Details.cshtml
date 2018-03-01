@@ -1,0 +1,35 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Library.Models;
+
+<h2>Patron: @Model["patron"].GetFirstName() @Model["patron"].GetLastName()</h2>
+<hr />
+@if (@Model["bookPatrons"].Count != 0)
+{
+  <div class="well">
+    <h4>This patron has these books:</h4>
+    <ul>
+      @foreach (Book book in @Model["bookPatrons"])
+      {
+        <li>@book.GetTitle()</li>
+      }
+    </ul>
+  </div>
+}
+<div class="well">
+<h4>Add a book to this patron:</h4>
+<form class="form-inline" action="/patrons/@Model["patron"].GetId()/patrons/new" method="post">
+  <div class="form-group">
+    <label for="book-id">Select a book</label>
+    <select id="book-id" name="book-id" type="text">
+      @foreach (var book in @Model["allBooks"])
+      {
+        <option value="@book.GetId()">@book.GetTitle()</option>
+      }
+    </select>
+  </div>
+  <button type="submit" class="btn btn-default">Add</button>
+</form>
+</div>
