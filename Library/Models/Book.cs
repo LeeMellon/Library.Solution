@@ -15,7 +15,7 @@ namespace Library.Models
     private string _status;
 
 // DateTime checkoutDate = DateTime.Today, DateTime dueDate = DateTime.Today,
-    public Book(string title, string callNumber, string tagNumber,DateTime checkoutDate , DateTime dueDate ,string status = "available", int id = 0)
+    public Book(string title, string callNumber, string tagNumber,DateTime checkoutDate , DateTime dueDate ,string status = "foo", int id = 0)
     {
       _title = title;
       _callNumber = callNumber;
@@ -351,33 +351,73 @@ namespace Library.Models
 
     }
 
-    public void Edit(string title, string callNumber, string tagNumber, DateTime checkoutDate, DateTime dueDate, string status)
+    public void Edit(string newTitle, string newCallNumber, string newTagNumber, DateTime newCheckoutDate, DateTime newDueDate, string newStatus)
+    {
+
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"UPDATE `books` SET title = @title, call_number = @callNumber, tag_number = @tagNumber, checkout_date = @checkoutDate, duedate = @dueDate, status = @status WHERE id = @searchId;";
+      cmd.Parameters.AddWithValue("@searchId", _id);
+      cmd.Parameters.AddWithValue("@title", newTitle);
+      cmd.Parameters.AddWithValue("@callNumber", newCallNumber);
+      cmd.Parameters.AddWithValue("@tagNumber", newTagNumber);
+      cmd.Parameters.AddWithValue("@checkoutDate", newCheckoutDate);
+      cmd.Parameters.AddWithValue("@dueDate", newDueDate);
+      cmd.Parameters.AddWithValue("@status", newStatus);
+
+      cmd.ExecuteNonQuery();
+      _title = newTitle;
+      _callNumber = newCallNumber;
+      _tagNumber = newTagNumber;
+      _checkoutDate = newCheckoutDate;
+      _dueDate = newDueDate;
+      _status = newStatus;
+
+      conn.Close();
+      if(conn != null)
+      {
+        conn.Dispose();
+
+      }
+
+    }
+
+    public bool BookAvails(int bookId)
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
 
       MySqlCommand cmd = conn.CreateCommand();
-      cmd.CommandText = @"UPDATE books SET title = @title, call_number =@callNumber, tag_number = @tagNumber, checkout_date = @checkoutDate, duedate = @dueDate, status = @status WHERE id = @searchId;";
-      cmd.Parameters.Add(new MySqlParameter("@searchId", _id));
-      cmd.Parameters.Add(new MySqlParameter("@title", _title));
-      cmd.Parameters.Add(new MySqlParameter("@callNumber", _callNumber));
-      cmd.Parameters.Add(new MySqlParameter("@tagNumber", _tagNumber));
-      cmd.Parameters.Add(new MySqlParameter("@checkoutDate", _checkoutDate));
-      cmd.Parameters.Add(new MySqlParameter("@dueDate", _dueDate));
-      cmd.Parameters.Add(new MySqlParameter("@status", _status));
+      cmd.CommandText =@"SELECT * FROM books WHERE id = @thisId;";
+      cmd.Parameters.Add(new MySqlParameter("@thisId", bookId));
 
-      cmd.ExecuteNonQuery();
-      _title = title;
-      _callNumber = callNumber;
-      _tagNumber = tagNumber;
-      _checkoutDate = checkoutDate;
-      _dueDate = dueDate;
-      _status = status;
+      MySqlDataReader rdr = cmd.ExecuteReader();
 
+      string bookStatus = "";
+
+      while (rdr.Read())
+      {
+        bookStatus = rdr.GetString(6);
+      }
 
       conn.Close();
-      if(conn != null)
+      if (conn !=null)
+      {
         conn.Dispose();
+      }
+
+      return bookStatus == "available";
+
+    }
+
+
+    public void Checkout(int bookId)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
 
     }
   }

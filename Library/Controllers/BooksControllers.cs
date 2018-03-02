@@ -105,14 +105,14 @@ namespace Library.Controllers
     [HttpPost("/books/{id}/update")]
     public ActionResult Update(int id)
     {
-      Book thisBook = Book.Find(id);
+      Book editBook = Book.Find(id);
       string newTitle = Request.Form["new-title"];
       string newCallNumber = Request.Form["new-call-number"];
       string newTagNumber = Request.Form["new-tag-number"];
       DateTime newCheckoutDate = Convert.ToDateTime(Request.Form["new-checkout-date"]);
       DateTime newDuedate= Convert.ToDateTime(Request.Form["new-duedate"]);
       string newStatus = Request.Form["new-status"];
-
+      editBook.Edit(newTitle, newCallNumber, newTagNumber, newCheckoutDate, newDuedate, newStatus);
       return RedirectToAction("Index");
     }
 
