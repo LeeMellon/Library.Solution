@@ -43,16 +43,16 @@ _This is an Epicodus practice project for week 4 of the C# course. Its purpose i
 
   CREATE TABLE `library`.`patrons` ( `id` INT NOT NULL AUTO_INCREMENT , `first_name` VARCHAR(255) NOT NULL , `last_name` VARCHAR(255) NOT NULL , `email` VARCHAR(255) NOT NULL , `card_number` INT NOT NULL AUTO_INCREMENT , PRIMARY KEY (`id`), UNIQUE (`card_number`)) ENGINE = InnoDB;
 
-  CREATE TABLE `library`.`books` ( `id` INT NOT NULL AUTO_INCREMENT , `title` VARCHAR(255) NOT NULL , `call_number` VARCHAR(255) NOT NULL , `tag_number` VARCHAR(255) NOT NULL , `checkout_date` DATE NOT NULL , `duedate` DATE NOT NULL , `status` ENUM('available','on-hold','checked-out','missing') NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+  CREATE TABLE `library`.`books` ( `id` INT NOT NULL AUTO_INCREMENT , `title` VARCHAR(255) NOT NULL , `call_number` VARCHAR(255) NOT NULL , `tag_number` VARCHAR(255) NOT NULL , `checkout_date` DATE NOT NULL , `duedate` DATE NOT NULL , `status` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
   CREATE TABLE `library`.`patrons_books` ( `id` INT NOT NULL AUTO_INCREMENT , `patron_id` INT NOT NULL , `book_id` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
   CREATE TABLE `library`.`authors_books` ( `id` INT NOT NULL AUTO_INCREMENT , `author_id` INT NOT NULL , `book_id` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
-  
+
   ```
 
-    See https://www.learnhowtoprogram.com/c/database-basics-ee7c9fd3-fcd9-4fff-8b1d-5ff7bfcbf8f0/database-practice-and-world-data for instructions and links explaining how to download the zipfile that is located inside this github repository.
+    See https://www.learnhowtoprogram.com/c/database-basics-ee7c9fd3-fcd9-4fff-8b1d-5ff7bfcbf8f0/database-practice-and-world-data for instructions and links explaining how to download the file that is located inside this github repository.
 
   * _Run the program_
     1. In the command line, cd into the project folder.

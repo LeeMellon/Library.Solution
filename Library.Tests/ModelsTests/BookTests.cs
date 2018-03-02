@@ -223,7 +223,7 @@ namespace Library.Models.Tests
     }
 
     [TestMethod]
-    public void Edit_EditsBookInfoInDatabase_Values()
+    public void Edit_EditsBookInfo_Values()
     {
       //Arrange
       Book testBook = new Book("Jaws", "FICTION BENCHLEY 1991", "Jaw1", DateTime.Today, DateTime.Today);
@@ -240,6 +240,28 @@ namespace Library.Models.Tests
       Assert.AreEqual(DateTime.Today, testBook.GetDueDate());
       Assert.AreEqual("checkedout", testBook.GetStatus());
 
+    }
+
+    [TestMethod]
+    public void Edit_EditsBookInfoInDatabase_Values()
+    {
+      //Arrange
+      Book testBookA = new Book("Jaws", "FICTION BENCHLEY 1991", "Jaw1", DateTime.Today, DateTime.Today);
+      testBookA.Save();
+
+      //Act
+      testBookA.Edit("It the test", "FICTION KING", "It1", DateTime.Today, DateTime.Today, "checkedout");
+      testBookA.Save();
+      List<Book> allBooks = Book.GetAll();
+      Book newTestBookB = allBooks[0];
+
+      //Assert
+      Assert.AreEqual("It the test", newTestBookB.GetTitle());
+      Assert.AreEqual("FICTION KING", newTestBookB.GetCallNumber());
+      Assert.AreEqual("It1", newTestBookB.GetTagNumber());
+      Assert.AreEqual(DateTime.Today, newTestBookB.GetCheckoutDate());
+      Assert.AreEqual(DateTime.Today, newTestBookB.GetDueDate());
+      Assert.AreEqual("checkedout", newTestBookB.GetStatus());
     }
 
   }
